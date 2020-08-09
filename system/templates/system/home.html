@@ -13,5 +13,7 @@
             </div>
         {% endfor %}
     {% endif %}
-    Welcome in Goals & Rewards application!
+    <p>Welcome in Goals & Rewards application!</p>
+    <p>You are logged as {{ username }}.</p>
+    <p>Click <a href="{% url 'account_log_out' %}">here</a> to log out.</p>
 {% endblock %}
