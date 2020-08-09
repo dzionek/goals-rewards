@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
 
 {% block title %} Register G&R {% endblock %}
 
 {% block body %}
-    Register yourself here!
+    <form method="post" class="form-group">
+            {% csrf_token %}
+            {{ form|crispy }}
+        <button type="submit" class="btn btn-success">Register</button>
+    </form>
 {% endblock %}
