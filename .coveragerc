@@ -1,0 +1,2 @@
+[run]
+omit = venv/*, manage.py, */migrations/*, goals_rewards/asgi.py, goals_rewards/wsgi.py, tests/*
