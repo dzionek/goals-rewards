@@ -11,6 +11,7 @@ install:
 
 script:
   - mypy .
+  - flake8
   - pytest --cov-report=xml --cov-config=.coveragerc --cov=. -n auto
 
 after_success:

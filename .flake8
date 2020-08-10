@@ -1,0 +1,4 @@
+[flake8]
+ignore = D203
+exclude = __pycache__, .mypy_cache, .pytest_cache, venv
+max-complexity = 10

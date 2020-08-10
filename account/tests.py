@@ -1,5 +1,3 @@
-from typing import Union
-
 from typing import Any
 import pytest
 
@@ -9,11 +7,13 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.test import Client
 
-from tests.fixtures import client, default_user, default_user_password
+from tests.constants import default_user_password
 from tests.helpers import is_based_on_template
+
 
 @pytest.mark.django_db
 class TestRoutes:
+
     def test_log_in_get(self, client: Client, default_user: User) -> None:
         response = client.get(reverse('account_index'))
         assert response.status_code == 200
@@ -25,25 +25,37 @@ class TestRoutes:
         assert 'Log In' not in response.content.decode()
         assert is_based_on_template(response, 'system/home.html')
 
-    def test_login_post_valid(self, client: Client, default_user: User) -> None:
+    def test_login_post_valid(self, client: Client,
+                              default_user: User) -> None:
         response = client.post(
-            reverse('account_index'), dict(username=default_user.username, password=default_user_password), follow=True
+            reverse('account_index'),
+            dict(
+                username=default_user.username,
+                password=default_user_password
+            ),
+            follow=True
         )
         assert response.status_code == 200
         assert 'logged in' in response.content.decode()
         assert 'Log In' not in response.content.decode()
 
-    def test_login_post_invalid_password(self, client: Client, default_user: User) -> None:
+    def test_login_post_invalid_password(self, client: Client,
+                                         default_user: User) -> None:
         response = client.post(
-            reverse('account_index'), dict(username=default_user.username, password='invalid_password'), follow=True
+            reverse('account_index'),
+            dict(username=default_user.username, password='invalid_password'),
+            follow=True
         )
         assert response.status_code == 200
         assert 'logged in' not in response.content.decode()
         assert 'Log In' in response.content.decode()
 
-    def test_login_post_invalid_login(self, client: Client, default_user: User) -> None:
+    def test_login_post_invalid_login(self, client: Client,
+                                      default_user: User) -> None:
         response = client.post(
-            reverse('account_index'), dict(username='invalid_login', password=default_user_password), follow=True
+            reverse('account_index'),
+            dict(username='invalid_login', password=default_user_password),
+            follow=True
         )
         assert response.status_code == 200
         assert 'logged in' not in response.content.decode()

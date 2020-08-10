@@ -7,6 +7,7 @@ from django.http import HttpRequest, HttpResponse
 
 from .forms import RegistrationForm
 
+
 def log_in(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         return redirect('system_home')
@@ -22,7 +23,8 @@ def log_in(request: HttpRequest) -> HttpResponse:
                 messages.success(request, 'You were successfully logged in!')
                 return redirect('system_home')
         else:
-            messages.error(request, 'The given username or password is invalid.')
+            messages.error(request,
+                           'The given username or password is invalid.')
     form = AuthenticationForm()
 
     return render(request, 'account/index.html', {'form': form})
@@ -32,8 +34,10 @@ def log_in(request: HttpRequest) -> HttpResponse:
 def log_out(request: HttpRequest) -> HttpResponse:
     username = request.user.username
     logout(request)
-    messages.success(request, f'The user {username} was successfully logged out!')
+    messages.success(request,
+                     f'The user {username} was successfully logged out!')
     return redirect('account_index')
+
 
 def register(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
@@ -44,7 +48,10 @@ def register(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             username = form.cleaned_data['username']
             form.save()
-            messages.success(request, f'The account was successfully created for {username}')
+            messages.success(
+                request,
+                f'The account was successfully created for {username}'
+            )
             return redirect('account_index')
     else:
         form = RegistrationForm()

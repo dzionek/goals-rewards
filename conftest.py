@@ -1,15 +1,14 @@
 import pytest
-from django.contrib.auth.models import User
 
+from django.contrib.auth.models import User
 from django.test import Client
+
+from tests.constants import default_user_password
 
 
 @pytest.fixture
 def client() -> Client:
     return Client()
-
-
-default_user_password = 'super-Secret123'
 
 
 @pytest.fixture

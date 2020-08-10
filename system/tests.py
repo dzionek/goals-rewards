@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.test import Client
 from django.urls import reverse
 
-from tests.fixtures import client, default_user
 
 @pytest.mark.django_db
 class TestRoutes:
@@ -17,4 +16,4 @@ class TestRoutes:
 
         response = client.get(reverse('system_home'))
         assert response.status_code == 200
-        assert 'Welcome in Goals & Rewards application' in response.content.decode()
+        assert 'Welcome in ' in response.content.decode()
