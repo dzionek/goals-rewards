@@ -10,6 +10,7 @@ install:
   - pip install codecov
 
 script:
+  - mypy .
   - pytest --cov-report=xml --cov-config=.coveragerc --cov=. -n auto
 
 after_success:

@@ -62,3 +62,6 @@ venv/
 
 # Django migrations
 */migrations
+
+# Mypy
+.mypy_cache/

@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.http import HttpRequest, HttpResponse
 
 from .forms import RegistrationForm
 
-def log_in(request):
+def log_in(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         return redirect('system_home')
 
@@ -16,9 +17,10 @@ def log_in(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
-            login(request, user)
-            messages.success(request, 'You were successfully logged in!')
-            return redirect('system_home')
+            if user:
+                login(request, user)
+                messages.success(request, 'You were successfully logged in!')
+                return redirect('system_home')
         else:
             messages.error(request, 'The given username or password is invalid.')
     form = AuthenticationForm()
@@ -27,13 +29,13 @@ def log_in(request):
 
 
 @login_required
-def log_out(request):
+def log_out(request: HttpRequest) -> HttpResponse:
     username = request.user.username
     logout(request)
     messages.success(request, f'The user {username} was successfully logged out!')
     return redirect('account_index')
 
-def register(request):
+def register(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         return redirect('system_home')
 
