@@ -9,6 +9,10 @@ install:
   - pip install -r requirements.txt
   - pip install codecov
 
+before_script:
+  - python manage.py makemigrations
+  - python manage.py migrate
+
 script:
   - mypy .
   - flake8

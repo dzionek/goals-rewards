@@ -61,7 +61,8 @@ venv/
 .idea/
 
 # Django migrations
-*/migrations
+*/migrations/*
+!*/migrations/__init__.py
 
 # Mypy
 .mypy_cache/
