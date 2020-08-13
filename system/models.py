@@ -35,7 +35,7 @@ class PointReward(models.Model):
 class Goal(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField(blank=True, null=True)
-    finish_date = models.DateTimeField(blank=True, null=True)
+    finish_date = models.DateField(blank=True, null=True)
     reward_points = models.IntegerField(
         blank=True, null=True, validators=[MinValueValidator(1)]
     )

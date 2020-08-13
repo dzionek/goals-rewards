@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+
+{% block title %} Goals & Rewards - Add Goal {% endblock %}
+
+{% block body %}
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Add Goal</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Add</button>
+        </div>
+    </form>
+    <a href="{% url 'system_home' %}">Go back</a>
+{% endblock %}

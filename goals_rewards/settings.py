@@ -146,3 +146,5 @@ MESSAGE_TAGS = {
 
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = 'system_home'
+
+TIME_INPUT_FORMATS = ['%I:%M %p']
