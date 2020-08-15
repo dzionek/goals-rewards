@@ -10,7 +10,7 @@ from .models import DirectReward, PointReward, UserPoint, Goal
 
 
 @pytest.mark.django_db
-class TestRoutes:
+class TestViews:
     def test_home(self, client: Client, default_user: User) -> None:
         check_login_required(client, 'system_home')
         client.force_login(default_user)
