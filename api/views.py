@@ -1,25 +1,73 @@
+from typing import Type
+
 from django.contrib.auth.models import User
-from rest_framework import generics
+from django.db.models import Model, QuerySet
 
-from system.models import Goal
-from .serializers import (UserSerializer, GoalSerializer)
+from rest_framework.serializers import ModelSerializer
+from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+from system.models import Goal, DirectReward, PointReward
+from .serializers import (UserSerializer, GoalSerializer,
+                          DirectRewardSerializer, PointRewardSerializer)
 
 
-class GoalList(generics.ListAPIView):
-    queryset = Goal.objects.all()
-    serializer_class = GoalSerializer
+# Admin-restricted views
+def admin_api_view_set_factory(serializer: Type[ModelSerializer],
+                               model: Type[Model]) -> Type[GenericViewSet]:
+
+    class AdminViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
+                       GenericViewSet):
+
+        queryset = model.objects.all()
+        serializer_class = serializer
+        permission_classes = [IsAdminUser]
+
+    return AdminViewSet
 
 
-class GoalDetail(generics.RetrieveAPIView):
-    queryset = Goal.objects.all()
-    serializer_class = GoalSerializer
+AdminUserViewSet = admin_api_view_set_factory(
+    UserSerializer, User
+)
+
+AdminGoalViewSet = admin_api_view_set_factory(
+    GoalSerializer, Goal
+)
+
+AdminDirectRewardViewSet = admin_api_view_set_factory(
+    DirectRewardSerializer, DirectReward
+)
+
+AdminPointRewardViewSet = admin_api_view_set_factory(
+    PointRewardSerializer, PointReward
+)
+
+
+# User-specific views
+def user_api_view_set_factory(serializer: Type[ModelSerializer],
+                              model: Type[Model]) -> Type[GenericViewSet]:
+
+    class ViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
+                  GenericViewSet):
+        serializer_class = serializer
+        permission_classes = [IsAuthenticated]
+
+        def get_queryset(self) -> QuerySet:
+            user = self.request.user
+            return model.objects.filter(user=user).all()
+
+    return ViewSet
+
+
+GoalViewSet = user_api_view_set_factory(
+    GoalSerializer, Goal
+)
+
+DirectRewardViewSet = user_api_view_set_factory(
+    DirectRewardSerializer, DirectReward
+)
+
+PointRewardViewSet = user_api_view_set_factory(
+    PointRewardSerializer, PointReward
+)

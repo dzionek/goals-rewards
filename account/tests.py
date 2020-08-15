@@ -7,12 +7,12 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.test import Client
 
-from tests.constants import default_user_password
+from tests.constants import default_password
 from tests.helpers import is_based_on_template
 
 
 @pytest.mark.django_db
-class TestRoutes:
+class TestViews:
 
     def test_log_in_get(self, client: Client, default_user: User) -> None:
         response = client.get(reverse('account_index'))
@@ -31,7 +31,7 @@ class TestRoutes:
             reverse('account_index'),
             dict(
                 username=default_user.username,
-                password=default_user_password
+                password=default_password
             ),
             follow=True
         )
@@ -54,7 +54,7 @@ class TestRoutes:
                                       default_user: User) -> None:
         response = client.post(
             reverse('account_index'),
-            dict(username='invalid_login', password=default_user_password),
+            dict(username='invalid_login', password=default_password),
             follow=True
         )
         assert response.status_code == 200

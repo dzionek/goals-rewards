@@ -7,13 +7,13 @@ from system.models import Goal, DirectReward, PointReward
 class DirectRewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = DirectReward
-        fields = ['name', 'description']
+        fields = ['id', 'name', 'description']
 
 
 class PointRewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = PointReward
-        fields = ['name', 'description', 'points']
+        fields = ['id', 'name', 'description', 'points']
 
 
 class GoalSerializer(serializers.ModelSerializer):
@@ -30,7 +30,12 @@ class GoalSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     goals = GoalSerializer(many=True, read_only=True)
     direct_rewards = DirectRewardSerializer(many=True, read_only=True)
+    point_rewards = PointRewardSerializer(many=True, read_only=True)
+    points = serializers.IntegerField(source='userpoint.points')
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'goals', 'direct_rewards']
+        fields = [
+            'id', 'username', 'points', 'goals',
+            'direct_rewards', 'point_rewards'
+        ]

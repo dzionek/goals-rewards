@@ -1,1 +1,1 @@
-default_user_password = 'super-Secret123'
+default_password = 'super-Secret123'
