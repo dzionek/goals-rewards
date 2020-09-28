@@ -1,22 +1,35 @@
-language: python
-python:
-  - 3.8
+jobs:
+  include:
+    - language: node_js
+      node_js: 14
 
-env:
-  - SECRET_KEY=secretkey
+      before_install: cd frontend
+      install: npm i
 
-install:
-  - pip install -r requirements.txt
-  - pip install codecov
+      before_script: npm install --save-dev codecov
 
-before_script:
-  - python manage.py makemigrations
-  - python manage.py migrate
+      script:
+        - npm run eslint
+        - npm run test
 
-script:
-  - mypy .
-  - flake8
-  - pytest --cov-report=xml --cov-config=.coveragerc --cov=. -n auto
+      after_success: ./node_modules/.bin/codecov
 
-after_success:
-  - codecov
+    - language: python
+      python:
+        - 3.8
+
+      install:
+        - pip install -r requirements.txt
+        - pip install codecov
+
+      before_script:
+        - python manage.py makemigrations
+        - python manage.py migrate
+
+      script:
+        - mypy .
+        - flake8
+        - pytest --ignore=frontend --cov-report=xml --cov-config=.coveragerc --cov=. -n auto
+
+      after_success:
+        - codecov

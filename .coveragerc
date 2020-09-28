@@ -7,4 +7,5 @@ omit =
     goals_rewards/wsgi.py,
     tests/*,
     */tests.py,
-    conftest.py
+    conftest.py,
+    frontend/*
